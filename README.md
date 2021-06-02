@@ -38,5 +38,6 @@ Following is the pictorial representation of message flow in rabbitmq fanout exc
 
 
 Rabbitmq web interface
-![alt text](https://alisamadzadeh.ir/rabbitmq/Screenshot 2021-06-02 225807.png)
+
+![alt text](https://alisamadzadeh.ir/rabbitmq/Screenshot2021-06-02 225807.png)
 
