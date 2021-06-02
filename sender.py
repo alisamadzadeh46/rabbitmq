@@ -8,18 +8,22 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 
 # create new exchange
-channel.exchange_declare(exchange='logs', exchange_type='fanout')
+channel.exchange_declare(exchange='direct_logs', exchange_type='direct')
 
-# create message replace command line or terminal
-message = 'This is testing message'
+# create dictionary message
+message = {
+    'info': 'this is information message',
+    'error': 'this is error message',
+    'warning': 'this is warning message',
+}
 
-# send simple message
-# if empty exchange,means direct exchange
-channel.basic_publish(
-    exchange='logs',
-    routing_key='',
-    body=message,
-)
+# access to message ,k:key , v : value
+for k, v in message.items():
+    channel.basic_publish(
+        exchange='direct_logs',
+        routing_key=k,
+        body=v,
+    )
 
 print('Message send')
 
