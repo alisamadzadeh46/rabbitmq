@@ -25,7 +25,5 @@ for k, v in message.items():
         body=v,
     )
 
-
-
 # this method close connection
 connection.close()
