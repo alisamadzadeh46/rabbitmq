@@ -35,3 +35,8 @@ Following is the pictorial representation of message flow in rabbitmq fanout exc
 1.https://www.tutlane.com/tutorial/rabbitmq/rabbitmq-exchanges
 
 ![alt text](https://alisamadzadeh.ir/rabbitmq/exchanges-bidings-routing-keys.png)
+
+
+Rabbitmq web interface
+![alt text](https://alisamadzadeh.ir/rabbitmq/Screenshot 2021-06-02 225807.png)
+
