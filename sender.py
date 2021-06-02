@@ -25,7 +25,7 @@ for k, v in message.items():
         body=v,
     )
 
-print('Message send')
+
 
 # this method close connection
 connection.close()
