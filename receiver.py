@@ -10,27 +10,30 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 
 # create new queue
+
+channel.exchange_declare(exchange='logs', exchange_type='fanout')
+
 # This method creates or checks a queue
-channel.queue_declare(queue='one', durable=True)
-print('waiting for message , press ctrl+c to exit ')
+result = channel.queue_declare(queue='', exclusive=True)
+
+# receive queue name
+qname = result.method.queue
+
+# create bind
+channel.queue_bind(exchange='logs', queue=qname)
+
+print('waiting  for logs')
 
 
-# body: this parameter reading from within the queue
+# create callback fun
 def callback(ch, method, properties, body):
-    print(f'Received {body}')
-    time.sleep(9)
-    print('Done')
-    channel.basic_ack(delivery_tag=method.delivery_tag)
+    print(f'Receive {body}')
 
 
-# Consume to the broker and binds messages
-# for the consumer_tag to the consumer callback
 channel.basic_consume(
-    queue='one',
+    queue=qname,
     on_message_callback=callback,
-)
-
-channel.basic_qos(prefetch_count=1)
+    auto_ack=True)
 
 # start consuming
 channel.start_consuming()
