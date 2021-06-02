@@ -37,7 +37,7 @@ Following is the pictorial representation of message flow in rabbitmq fanout exc
 ![alt text](https://alisamadzadeh.ir/rabbitmq/exchanges-bidings-routing-keys.png)
 
 
-Rabbitmq web interface
+# Rabbitmq web interface
 
-![alt text](https://alisamadzadeh.ir/rabbitmq/Screenshot2021-06-02 225807.png)
+![alt text](https://alisamadzadeh.ir/rabbitmq/Screenshot%202021-06-02%20225807.png)
 
