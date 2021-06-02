@@ -11,7 +11,8 @@ channel = connection.channel()
 
 # create new queue
 # This method creates or checks a queue
-channel.queue_declare(queue='one')
+channel.queue_declare(queue='one', durable=True)
+print('waiting for message , press ctrl+c to exit ')
 
 
 # body: this parameter reading from within the queue
@@ -27,11 +28,9 @@ def callback(ch, method, properties, body):
 channel.basic_consume(
     queue='one',
     on_message_callback=callback,
-    auto_ack=True
 )
 
 channel.basic_qos(prefetch_count=1)
-print('waiting for message , press ctrl+c to exit ')
 
 # start consuming
 channel.start_consuming()
