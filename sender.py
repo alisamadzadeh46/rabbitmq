@@ -9,14 +9,20 @@ channel = connection.channel()
 
 # create new queue
 # This method creates or checks a queue
-channel.queue_declare(queue='hi')
+# when True durable, when restart server or crash information  write in hard , Survive reboots of the broker
+channel.queue_declare(queue='one', durable=True)
+
+# create message replace command line or terminal
+message = 'This is testing message'
 
 # send simple message
 # if empty exchange,means direct exchange
 channel.basic_publish(
     exchange='',
-    routing_key='hi',
-    body='hello world')
+    routing_key='one',
+    body=message,
+    properties=pika.BasicProperties(delivery_mode=2,)
+)
 
 print('Message send')
 
