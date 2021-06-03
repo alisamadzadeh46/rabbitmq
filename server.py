@@ -1,34 +1,22 @@
 import pika
-import uuid
+import time
+
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+ch = connection.channel()
+ch.queue_declare(queue='rpc_queue')
 
 
-class Sender:
-    def __init__(self):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-        self.ch = self.connection.channel()
-        result = self.ch.queue_declare(queue='', exclusive=True)
-        self.qname = result.method.queue
-        self.ch.basic_consume(queue=self.qname, on_message_callback=self.on_response, auto_ack=True)
-
-    def on_response(self, ch, method, proper, body):
-        if self.corr_id == proper.correlation_id:
-            self.response = body
-
-    def call(self, n):
-        self.response = None
-        self.corr_id = str(uuid.uuid4())
-        send.ch.basic_publish(exchange='', routing_key='rpc_queue',
-                              properties=pika.BasicProperties(reply_to=self.qname, correlation_id=self.corr_id),
-                              body=str(n))
-
-        while self.response is None:
-            self.connection.process_data_events()
-
-        return int(self.response)
+def callback(ch, method, proper, body):
+    n = int(body)
+    print('processing message')
+    time.sleep(4)
+    response = n + 1
+    ch.basic_publish(exchange='', routing_key=proper.reply_to,
+                     properties=pika.BasicProperties(correlation_id=proper.correlation_id), body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-send = Sender()
-
-response = send.call(20)
-
-print(response)
+ch.basic_qos(prefetch_count=1)
+ch.basic_consume(queue='rpc_queue', on_message_callback=callback)
+print('Waiting for message')
+ch.start_consuming()
