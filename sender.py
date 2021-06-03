@@ -12,7 +12,7 @@ channel.exchange_declare(exchange='topic_logs', exchange_type='topic')
 
 # create dictionary message
 message = {
-    'info.debug,NotImportant': 'this is an not important message',
+    'info.debug,notimportant': 'this is an not important message',
     'error.warning.important': 'this is an important message',
 }
 

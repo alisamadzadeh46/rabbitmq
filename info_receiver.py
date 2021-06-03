@@ -8,22 +8,21 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 
 # create new exchange
-channel.exchange_declare(exchange='direct_logs', exchange_type='direct')
+channel.exchange_declare(exchange='topic_logs', exchange_type='topic')
 
 result = channel.queue_declare(queue='', exclusive=True)
 
 qname = result.method.queue
 
-message = ('info', 'error', 'warning')
+binding_key = '#.notimportant'
 
-for messages in message:
-    channel.queue_bind(exchange='direct_logs', queue=qname, routing_key=messages)
+channel.queue_bind(exchange='topic_logs', queue=qname, routing_key=binding_key)
 
 print('Waiting for message')
 
 
 def callback(ch, method, properties, body):
-    print(f' {method.routing_key} , {body}')
+    print(body)
 
 
 channel.basic_consume(queue=qname, on_message_callback=callback, auto_ack=True)
